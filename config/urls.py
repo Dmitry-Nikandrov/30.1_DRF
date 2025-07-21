@@ -6,4 +6,5 @@ from materials.urls import app_name
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("materials.urls", namespace=app_name)),
+    path("", include("users.urls", namespace="users")),
 ]

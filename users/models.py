@@ -12,11 +12,15 @@ class User(AbstractUser):
         max_length=30,
         verbose_name="Имя пользователя",
         help_text="Введите имя пользователя",
+        blank=True,
+        null=True,
     )
     last_name = models.CharField(
         max_length=30,
         verbose_name="Фамилие пользователя",
         help_text="Введите фамилие пользователя",
+        blank=True,
+        null=True,
     )
     email = models.EmailField(
         unique=True,

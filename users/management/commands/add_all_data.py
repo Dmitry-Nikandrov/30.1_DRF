@@ -5,7 +5,7 @@ from users.models import Payment, User
 
 
 class Command(BaseCommand):
-    help = "Add payment data"
+    help = "Add all informayion"
 
     def handle(self, *args, **kwargs):
 
@@ -14,16 +14,29 @@ class Command(BaseCommand):
         Lesson.objects.all().delete()
         Payment.objects.all().delete()
 
+        user = User.objects.create(email="admin@mail.ru")
+        user.is_staff = True
+        user.is_active = True
+        user.is_superuser = True
+        user.set_password("1234")
+        user.save()
+
         User1, _ = User.objects.get_or_create(
-            email="ivano@mail.ru",
+            email="ivanov@mail.ru",
             phone_number="777777777",
+            password="1234",
+            is_active=True,
+            is_superuser=False,
             first_name="Иван",
             last_name="Иванов",
         )
 
         User2, _ = User.objects.get_or_create(
-            email="Petr@mail.ru",
+            email="petrov@mail.ru",
             phone_number="33333333",
+            password="1234",
+            is_active=True,
+            is_superuser=False,
             first_name="Петр",
             last_name="Петров",
         )
@@ -31,25 +44,32 @@ class Command(BaseCommand):
         Course1, _ = Course.objects.get_or_create(
             name="Первый курс",
             content="Дальнейшее изучение школьной программы",
+            owner=User1,
         )
 
         Course2, _ = Course.objects.get_or_create(
             name="Второй курс",
             content="Дальнейшее изучение предметов первого курса",
+            owner=User2,
         )
 
         Lesson1, _ = Lesson.objects.get_or_create(
             name="Математика",
             content="Дальнейшее изучение основ математического анализа",
             course=Course1,
+            owner=User1,
         )
 
         Lesson2, _ = Lesson.objects.get_or_create(
-            name="Информатика", content="Дальнейшее изучение основ ЭВМ", course=Course1
+            name="Информатика",
+            content="Дальнейшее изучение основ ЭВМ",
+            course=Course1,
         )
 
         Lesson3, _ = Lesson.objects.get_or_create(
-            name="История", content="Дальнейшее изучение истории", course=Course1
+            name="История",
+            content="Дальнейшее изучение истории",
+            course=Course1,
         )
 
         Lesson4, _ = Lesson.objects.get_or_create(
@@ -62,6 +82,7 @@ class Command(BaseCommand):
             name="Сопротивление материалов",
             content="Специализированная техническая дисциплина для инженерных специальностей",
             course=Course2,
+            owner=User2,
         )
 
         payments = [

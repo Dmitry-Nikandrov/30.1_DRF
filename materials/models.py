@@ -17,6 +17,14 @@ class Course(models.Model):
         verbose_name="Содержание курса",
         help_text="Укажите содержание курса",
     )
+    owner = models.OneToOneField(
+        "users.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Пользователь",
+        help_text="Введите пользователя",
+    )
 
     def __str__(self):
         return self.name
@@ -49,6 +57,14 @@ class Lesson(models.Model):
         verbose_name="Ссылка на материалы в сети",
         blank=True,
         null=True,
+    )
+    owner = models.OneToOneField(
+        "users.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Пользователь",
+        help_text="Введите пользователя",
     )
 
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="course")

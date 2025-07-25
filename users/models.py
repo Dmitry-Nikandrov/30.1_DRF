@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from materials.models import Course, Lesson
 
 
 class User(AbstractUser):
@@ -66,16 +65,16 @@ class Payment(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     payment_date = models.DateField(verbose_name="Дата оплаты")
-    lesson_payed = models.ForeignKey(
-        Lesson,
+    lesson_payed = models.OneToOneField(
+        'materials.Lesson',
         on_delete=models.CASCADE,
         related_name="lesson_payed",
         blank=True,
         null=True,
         verbose_name="оплаченный урок",
     )
-    course_payed = models.ForeignKey(
-        Course,
+    course_payed = models.OneToOneField(
+        'materials.Course',
         on_delete=models.CASCADE,
         related_name="course_payed",
         blank=True,

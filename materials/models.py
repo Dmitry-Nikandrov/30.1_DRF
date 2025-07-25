@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Course(models.Model):
     name = models.CharField(
@@ -17,8 +19,8 @@ class Course(models.Model):
         verbose_name="Содержание курса",
         help_text="Укажите содержание курса",
     )
-    owner = models.OneToOneField(
-        "users.User",
+    owner = models.ForeignKey(
+        User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -58,8 +60,8 @@ class Lesson(models.Model):
         blank=True,
         null=True,
     )
-    owner = models.OneToOneField(
-        "users.User",
+    owner = models.ForeignKey(
+        User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

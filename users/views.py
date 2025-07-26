@@ -4,7 +4,7 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import AllowAny
 
 from users.models import Payment, User
-from users.permissions import IsOwner
+from users.permissions import IsCurrentuser, IsOwner
 from users.serializers import PaymentSerializers, UserSerializers
 
 
@@ -21,21 +21,18 @@ class UserCreateAPIView(generics.CreateAPIView):
 class UserListAPIView(generics.ListAPIView):
     serializer_class = UserSerializers
     queryset = User.objects.all()
-    filter_backends = DjangoFilterBackend
-    filterset_fields = ["email1", "first_name", "last_name"]
-
 
 
 class UserRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = UserSerializers
     queryset = User.objects.all()
-
+    permission_classes = (AllowAny,)
 
 
 class UserUpdateAPIView(generics.UpdateAPIView):
     serializer_class = UserSerializers
     queryset = User.objects.all()
-    permission_classes = (IsOwner,)
+    permission_classes = (IsCurrentuser,)
 
 
 class UserDestroyAPIView(generics.DestroyAPIView):

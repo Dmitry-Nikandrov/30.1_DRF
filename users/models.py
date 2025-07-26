@@ -2,7 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-
 class User(AbstractUser):
 
     username = None
@@ -66,7 +65,7 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     payment_date = models.DateField(verbose_name="Дата оплаты")
     lesson_payed = models.OneToOneField(
-        'materials.Lesson',
+        "materials.Lesson",
         on_delete=models.CASCADE,
         related_name="lesson_payed",
         blank=True,
@@ -74,7 +73,7 @@ class Payment(models.Model):
         verbose_name="оплаченный урок",
     )
     course_payed = models.OneToOneField(
-        'materials.Course',
+        "materials.Course",
         on_delete=models.CASCADE,
         related_name="course_payed",
         blank=True,

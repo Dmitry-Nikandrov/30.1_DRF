@@ -1,6 +1,7 @@
-from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group
-from materials.models import Course, Lesson
+from django.core.management.base import BaseCommand
+
+from materials.models import Course, Lesson, Subscription
 from users.models import Payment, User
 
 
@@ -14,9 +15,9 @@ class Command(BaseCommand):
         Lesson.objects.all().delete()
         Payment.objects.all().delete()
         Group.objects.all().delete()
+        Subscription.objects.all().delete()
 
-
-        group_moder = Group.objects.create(name='moder')
+        group_moder = Group.objects.create(name="moder")
 
         user = User.objects.create(email="admin@mail.ru")
         user.is_staff = True
@@ -61,6 +62,20 @@ class Command(BaseCommand):
             name="Второй курс",
             content="Дальнейшее изучение предметов первого курса",
             owner=User2,
+        )
+
+        Subscription1, _ = Subscription.objects.get_or_create(
+            user=User1,
+            course=Course1,
+        )
+        Subscription2, _ = Subscription.objects.get_or_create(
+            user=User1,
+            course=Course2,
+        )
+
+        Subscription3, _ = Subscription.objects.get_or_create(
+            user=User2,
+            course=Course1,
         )
 
         Lesson1, _ = Lesson.objects.get_or_create(
@@ -116,14 +131,14 @@ class Command(BaseCommand):
             {
                 "user": User1,
                 "payment_date": "2025-03-01",
-                #"lesson_payed": Lesson2,
+                # "lesson_payed": Lesson2,
                 "payment": 17000,
                 "payment_method": "перевод на счет",
             },
             {
                 "user": User1,
                 "payment_date": "2025-04-01",
-                #"lesson_payed": Lesson3,
+                # "lesson_payed": Lesson3,
                 "payment": 20000,
                 "payment_method": "наличный расчет",
             },
@@ -144,21 +159,21 @@ class Command(BaseCommand):
             {
                 "user": User2,
                 "payment_date": "2026-02-01",
-                #"course_payed": Course2,
+                # "course_payed": Course2,
                 "payment": 450000,
                 "payment_method": "перевод на счет",
             },
             {
                 "user": User2,
                 "payment_date": "2026-01-05",
-                #"lesson_payed": Lesson4,
+                # "lesson_payed": Lesson4,
                 "payment": 7450,
                 "payment_method": "перевод на счет",
             },
             {
                 "user": User2,
                 "payment_date": "2026-02-05",
-                #"lesson_payed": Lesson5,
+                # "lesson_payed": Lesson5,
                 "payment": 9600,
                 "payment_method": "наличный расчет",
             },

@@ -18,16 +18,9 @@ class CourseSerializers(serializers.ModelSerializer):
     def get_lesson_count(self, object):
         return object.course.all().count()
 
-    def get_lesson_count(self, object):
-        def has_object_permission(self, request, view, obj):
-            if obj.owner == request.user:
-                return True
-            return False
-
     class Meta:
         model = Course
         fields = "__all__"
-
 
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -14,7 +14,5 @@ class IsOwner(BasePermission):
 
 
 class IsCurrentuser(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        if request.user == view.get_object().owner:
-            return True
-        return False
+    def has_object_permission(self, request, object):
+        return request.user == object

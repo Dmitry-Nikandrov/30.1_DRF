@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import generics, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
@@ -6,14 +8,17 @@ from rest_framework.views import APIView
 
 from materials.models import Course, Lesson, Subscription
 from materials.paginators import CustomPagination
-from materials.serializers import (
-    CourseSerializers,
-    LessonSerializers,
-    SubscriptionSerializer,
-)
+from materials.serializers import (CourseSerializers, LessonSerializers,
+                                   SubscriptionSerializer)
 from users.permissions import IsModer, IsOwner
 
 
+@method_decorator(
+    name="list",
+    decorator=swagger_auto_schema(
+        operation_description="description from swagger_auto_schema via method_decorator"
+    ),
+)
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializers
     queryset = Course.objects.all()

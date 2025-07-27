@@ -1,16 +1,13 @@
 from django.urls import path
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
 
 from users.apps import UsersConfig
-from users.views import (
-    PaymentListAPIView,
-    UserCreateAPIView,
-    UserDestroyAPIView,
-    UserListAPIView,
-    UserRetrieveAPIView,
-    UserUpdateAPIView,
-)
+from users.views import (PaymentCreateAPIView, PaymentListAPIView,
+                         UserCreateAPIView, UserDestroyAPIView,
+                         UserListAPIView, UserRetrieveAPIView,
+                         UserUpdateAPIView)
 
 app_name = UsersConfig.name
 
@@ -31,4 +28,5 @@ urlpatterns = [
         name="login",
     ),
     path("users/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("payment/", PaymentCreateAPIView.as_view(), name="payment"),
 ]

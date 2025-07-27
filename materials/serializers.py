@@ -22,6 +22,7 @@ class CourseSerializers(serializers.ModelSerializer):
         model = Course
         fields = "__all__"
 
+
 class SubscriptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscription

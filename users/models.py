@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -83,6 +85,21 @@ class Payment(models.Model):
     payment = models.PositiveIntegerField(verbose_name="Сумма платежа")
     payment_method = models.CharField(
         max_length=50, choices=STATUS_IN_CHOICES, verbose_name="метод платежа"
+    )
+    payment_date = models.DateField(default=datetime.now, verbose_name="Дата оплаты")
+
+    session_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="ID сессии",
+    )
+
+    link = models.URLField(
+        max_length=400,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на оплату",
     )
 
     class Meta:

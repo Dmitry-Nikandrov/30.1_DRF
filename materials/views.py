@@ -11,7 +11,7 @@ from materials.paginators import CustomPagination
 from materials.serializers import (CourseSerializers, LessonSerializers,
                                    SubscriptionSerializer)
 from users.permissions import IsModer, IsOwner
-
+from materials.tasks import subscription_message
 
 @method_decorator(
     name="list",
@@ -23,12 +23,6 @@ class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializers
     queryset = Course.objects.all()
     pagination_class = CustomPagination
-
-    # def get_serializers_class(self):
-    #     if self.action == "retrieve":
-    #         return CourseDeyailSerializer
-    #     else:
-    #         CourseSerializers
 
     def get_permissions(self):
         if self.action == "create":
@@ -43,6 +37,12 @@ class CourseViewSet(viewsets.ModelViewSet):
         new_course = serializer.save()
         new_course.owner = self.request.user
         new_course.save()
+
+    def perform_update(self, serializer):
+        update_course = serializer.save()
+        subscriptions = Subscription.objects.filter(course=update_course)
+        for subscription in subscriptions:
+            subscription_message.delay(update_course.title, subscription.user.email)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):

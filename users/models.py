@@ -1,7 +1,7 @@
+from datetime import datetime
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
-from materials.models import Course, Lesson
 
 
 class User(AbstractUser):
@@ -12,11 +12,15 @@ class User(AbstractUser):
         max_length=30,
         verbose_name="Имя пользователя",
         help_text="Введите имя пользователя",
+        blank=True,
+        null=True,
     )
     last_name = models.CharField(
         max_length=30,
         verbose_name="Фамилие пользователя",
         help_text="Введите фамилие пользователя",
+        blank=True,
+        null=True,
     )
     email = models.EmailField(
         unique=True,
@@ -62,16 +66,16 @@ class Payment(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     payment_date = models.DateField(verbose_name="Дата оплаты")
-    lesson_payed = models.ForeignKey(
-        Lesson,
+    lesson_payed = models.OneToOneField(
+        "materials.Lesson",
         on_delete=models.CASCADE,
         related_name="lesson_payed",
         blank=True,
         null=True,
         verbose_name="оплаченный урок",
     )
-    course_payed = models.ForeignKey(
-        Course,
+    course_payed = models.OneToOneField(
+        "materials.Course",
         on_delete=models.CASCADE,
         related_name="course_payed",
         blank=True,
@@ -81,6 +85,21 @@ class Payment(models.Model):
     payment = models.PositiveIntegerField(verbose_name="Сумма платежа")
     payment_method = models.CharField(
         max_length=50, choices=STATUS_IN_CHOICES, verbose_name="метод платежа"
+    )
+    payment_date = models.DateField(default=datetime.now, verbose_name="Дата оплаты")
+
+    session_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        verbose_name="ID сессии",
+    )
+
+    link = models.URLField(
+        max_length=400,
+        blank=True,
+        null=True,
+        verbose_name="Ссылка на оплату",
     )
 
     class Meta:
